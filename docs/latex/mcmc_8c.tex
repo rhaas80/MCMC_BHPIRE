@@ -1,0 +1,172 @@
+\hypertarget{mcmc_8c}{}\section{mcmc.\+c File Reference}
+\label{mcmc_8c}\index{mcmc.\+c@{mcmc.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{mcmc_8c_ad2ca0ebda85ee57ee8095dbd25011fdd}{N\+P\+T\+S\+M\+AX}~1024\hypertarget{mcmc_8c_ad2ca0ebda85ee57ee8095dbd25011fdd}{}\label{mcmc_8c_ad2ca0ebda85ee57ee8095dbd25011fdd}
+
+\begin{DoxyCompactList}\small\item\em max number of data points \end{DoxyCompactList}\item 
+\#define \hyperlink{mcmc_8c_adbbb52b362a10382d19ff8f4874b4f6d}{N\+P\+A\+R\+A\+M\+M\+AX}~16\hypertarget{mcmc_8c_adbbb52b362a10382d19ff8f4874b4f6d}{}\label{mcmc_8c_adbbb52b362a10382d19ff8f4874b4f6d}
+
+\begin{DoxyCompactList}\small\item\em max number of model parameters \end{DoxyCompactList}\item 
+\#define \hyperlink{mcmc_8c_ade60ede0376eec193b38f3f28cb62c5e}{F\+N\+A\+M\+E\+L\+E\+N\+G\+TH}~24\hypertarget{mcmc_8c_ade60ede0376eec193b38f3f28cb62c5e}{}\label{mcmc_8c_ade60ede0376eec193b38f3f28cb62c5e}
+
+\begin{DoxyCompactList}\small\item\em max length of filename for data \end{DoxyCompactList}\item 
+\#define \hyperlink{mcmc_8c_a42f8c497a1968074f38bf5055c650dca}{V\+E\+R\+B\+O\+SE}~1\hypertarget{mcmc_8c_a42f8c497a1968074f38bf5055c650dca}{}\label{mcmc_8c_a42f8c497a1968074f38bf5055c650dca}
+
+\begin{DoxyCompactList}\small\item\em if V\+E\+R\+B\+O\+SE==1, print a lot of remarks \end{DoxyCompactList}\item 
+\#define \hyperlink{mcmc_8c_a9fdff3d78b754d4b831816d0560dbb57}{E\+R\+R\+O\+R\+\_\+\+F\+I\+LE}~1\hypertarget{mcmc_8c_a9fdff3d78b754d4b831816d0560dbb57}{}\label{mcmc_8c_a9fdff3d78b754d4b831816d0560dbb57}
+
+\begin{DoxyCompactList}\small\item\em error code for file i/o errors \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{mcmc_8c_a65782b161e8945e9eda51d42c2c2e4e1}{model} (double u\+Co, double v\+Co, int Nparam, double Aparam\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Calculates the model predictions. \end{DoxyCompactList}\item 
+double \hyperlink{mcmc_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{walkers} (char fname\mbox{[}$\,$\mbox{]}, int Nchain, int Nparam, double Aparam\mbox{[}$\,$\mbox{]}, double dev\mbox{[}$\,$\mbox{]}, int Npts, double u\+Co\mbox{[}$\,$\mbox{]}, double v\+Co\mbox{[}$\,$\mbox{]}, double Vis\mbox{[}$\,$\mbox{]}, double Sigma\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Runs an M\+C\+MC chain. \end{DoxyCompactList}\item 
+int \hyperlink{mcmc_8c_a840291bc02cba5474a4cb46a9b9566fe}{main} (void)
+\begin{DoxyCompactList}\small\item\em Main function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{mcmc.\+c@{mcmc.\+c}!main@{main}}
+\index{main@{main}!mcmc.\+c@{mcmc.\+c}}
+\subsubsection[{\texorpdfstring{main(void)}{main(void)}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{mcmc_8c_a840291bc02cba5474a4cb46a9b9566fe}{}\label{mcmc_8c_a840291bc02cba5474a4cb46a9b9566fe}
+
+
+Main function. 
+
+Main function
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018 
+\end{DoxyDate}
+
+
+Definition at line 54 of file mcmc.\+c.
+
+\index{mcmc.\+c@{mcmc.\+c}!model@{model}}
+\index{model@{model}!mcmc.\+c@{mcmc.\+c}}
+\subsubsection[{\texorpdfstring{model(double u\+Co, double v\+Co, int Nparam, double Aparam[])}{model(double uCo, double vCo, int Nparam, double Aparam[])}}]{\setlength{\rightskip}{0pt plus 5cm}double model (
+\begin{DoxyParamCaption}
+\item[{double}]{u\+Co, }
+\item[{double}]{v\+Co, }
+\item[{int}]{Nparam, }
+\item[{double}]{Aparam\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{mcmc_8c_a65782b161e8945e9eda51d42c2c2e4e1}{}\label{mcmc_8c_a65782b161e8945e9eda51d42c2c2e4e1}
+
+
+Calculates the model predictions. 
+
+Given a number of parameters Nparam and their values stored in the array Aparam\mbox{[}\mbox{]}, it returns model prediction at the location with coordinates (u\+Co, v\+Co).
+
+The model used here generates the visibility amplitude of a 2-\/\+Gaussian component model
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{walkers()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em u\+Co} & a double with the u-\/coordinate for the evaluation of the model\\
+\hline
+{\em v\+Co} & a double with the v-\/coordinate for the evaluation of the model\\
+\hline
+{\em Nparam} & an int with the number of model parameters\\
+\hline
+{\em Aparam\mbox{[}$\,$\mbox{]}} & an array of doubles with the current values of the model parameters\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a double with the log prior likelihood 
+\end{DoxyReturn}
+
+
+Definition at line 57 of file chain.\+c.
+
+\index{mcmc.\+c@{mcmc.\+c}!walkers@{walkers}}
+\index{walkers@{walkers}!mcmc.\+c@{mcmc.\+c}}
+\subsubsection[{\texorpdfstring{walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev[], int Npts, double u\+Co[], double v\+Co[], double Vis[], double Sigma[])}{walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])}}]{\setlength{\rightskip}{0pt plus 5cm}double walkers (
+\begin{DoxyParamCaption}
+\item[{char}]{fname\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{Nchain, }
+\item[{int}]{Nparam, }
+\item[{double}]{Aparam\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{dev\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{Npts, }
+\item[{double}]{u\+Co\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{v\+Co\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Vis\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Sigma\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{mcmc_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{}\label{mcmc_8c_a3dd87c67e7f8505b3080845d0d9c8dad}
+
+
+Runs an M\+C\+MC chain. 
+
+Runs an M\+C\+MC chain
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{mcmc_8c_a840291bc02cba5474a4cb46a9b9566fe}{main()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em fname} & a string with the filename where to record the chains\\
+\hline
+{\em Nchains} & an int with the length of the chain to be calculated\\
+\hline
+{\em Nparam} & an int with the number of model parameters\\
+\hline
+{\em Aparam\mbox{[}$\,$\mbox{]}} & an array of doubles with the initial values of the model parameters\\
+\hline
+{\em dev\mbox{[}$\,$\mbox{]}} & an array of doubles with the standard deviations of Gaussian steps for each model parameter\\
+\hline
+{\em Npts} & an integer with the number of data points\\
+\hline
+{\em u\+Co\mbox{[}$\,$\mbox{]}} & an array of doubles with the u-\/coordinates of the data\\
+\hline
+{\em v\+Co\mbox{[}$\,$\mbox{]}} & an array of doubles with the v-\/coordinates of the data\\
+\hline
+{\em Vis\mbox{[}$\,$\mbox{]}} & an array of doubles with the visibility amplitudes\\
+\hline
+{\em Sigma\mbox{[}$\,$\mbox{]}} & an array of doubles with the errors\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a double with the acceptance ratio for this chain; also on return, the array Aparam\mbox{[}\mbox{]} will have the model parameters of the most likely model. 
+\end{DoxyReturn}
+
+
+Definition at line 314 of file chain.\+c.
+

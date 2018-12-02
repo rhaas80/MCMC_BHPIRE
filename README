@@ -1,0 +1,27 @@
+======================================================================
+To install:
+======================================================================
+
+make
+
+======================================================================
+To run:
+======================================================================
+simply give
+./mcmc
+
+to see the corner plot of the MCMC chains give
+python plot_corner.py
+open cornerplot.pdf
+
+to see the best-fit model against the data, give
+python plot_model.py
+
+to see the actual chains give
+python plot_chains.py
+
+======================================================================
+For documentation
+======================================================================
+cd docs/html
+open index.html

@@ -1,0 +1,373 @@
+\hypertarget{chain_8c}{}\section{chain.\+c File Reference}
+\label{chain_8c}\index{chain.\+c@{chain.\+c}}
+
+
+File with subroutines to calculate an M\+C\+MC chain.  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries S\+E\+E\+D\+NO}~4357U\hypertarget{chain_8c_a3195e483e3ba2ef3d9bf76c1aecf1715}{}\label{chain_8c_a3195e483e3ba2ef3d9bf76c1aecf1715}
+
+\item 
+\#define {\bfseries muarcsec\+To\+Rad}~4.\+8481368110954e-\/12\hypertarget{chain_8c_a59ed6cc26f27818a736029cb86bc1d11}{}\label{chain_8c_a59ed6cc26f27818a736029cb86bc1d11}
+
+\item 
+\#define {\bfseries E\+R\+R\+O\+R\+\_\+\+F\+I\+LE}~9999\hypertarget{chain_8c_a9fdff3d78b754d4b831816d0560dbb57}{}\label{chain_8c_a9fdff3d78b754d4b831816d0560dbb57}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef unsigned int {\bfseries uint32}\hypertarget{chain_8c_a1134b580f8da4de94ca6b1de4d37975e}{}\label{chain_8c_a1134b580f8da4de94ca6b1de4d37975e}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{chain_8c_a65782b161e8945e9eda51d42c2c2e4e1}{model} (double u\+Co, double v\+Co, int Nparam, double Aparam\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Calculates the model predictions. \end{DoxyCompactList}\item 
+double \hyperlink{chain_8c_a7c34883ff70d6834eae0c1fcf01e5075}{prior} (int Nparam, double Aparam\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Calculates the priors. \end{DoxyCompactList}\item 
+double \hyperlink{chain_8c_a0f15317bfdd442b54ab5505726f7ada2}{like} (int Nparam, double Aparam\mbox{[}$\,$\mbox{]}, int Npts, double u\+Co\mbox{[}$\,$\mbox{]}, double v\+Co\mbox{[}$\,$\mbox{]}, double Vis\mbox{[}$\,$\mbox{]}, double Sigma\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Calculates the likelihood. \end{DoxyCompactList}\item 
+double \hyperlink{chain_8c_a0de826c8eaed4061c3cae4231a67359d}{post} (int Nparam, double Aparam\mbox{[}$\,$\mbox{]}, int Npts, double u\+Co\mbox{[}$\,$\mbox{]}, double v\+Co\mbox{[}$\,$\mbox{]}, double Vis\mbox{[}$\,$\mbox{]}, double Sigma\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Calculates the posterior. \end{DoxyCompactList}\item 
+double \hyperlink{chain_8c_ae216a94f88cee2af4c2f6c9f66d53005}{gauss} (double sigma)
+\begin{DoxyCompactList}\small\item\em Returns a value drawn from a Gaussian distribution. \end{DoxyCompactList}\item 
+double \hyperlink{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{walkers} (char fname\mbox{[}$\,$\mbox{]}, int Nchain, int Nparam, double Aparam\mbox{[}$\,$\mbox{]}, double dev\mbox{[}$\,$\mbox{]}, int Npts, double u\+Co\mbox{[}$\,$\mbox{]}, double v\+Co\mbox{[}$\,$\mbox{]}, double Vis\mbox{[}$\,$\mbox{]}, double Sigma\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Runs an M\+C\+MC chain. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+uint32 {\bfseries M\+T\+M\+AX} =0x\+F\+F\+F\+F\+F\+F\+F\+FU\hypertarget{chain_8c_abe3d0c2a6d1f14b0fa1526d851ecc71d}{}\label{chain_8c_abe3d0c2a6d1f14b0fa1526d851ecc71d}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+File with subroutines to calculate an M\+C\+MC chain. 
+
+\begin{DoxyAuthor}{Author}
+D.\+Psaltis
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+November 26, 2018
+\end{DoxyDate}
+No known bugs
+
+\begin{DoxyWarning}{Warning}
+No known warnings 
+\end{DoxyWarning}
+
+
+\subsection{Function Documentation}
+\index{chain.\+c@{chain.\+c}!gauss@{gauss}}
+\index{gauss@{gauss}!chain.\+c@{chain.\+c}}
+\subsubsection[{\texorpdfstring{gauss(double sigma)}{gauss(double sigma)}}]{\setlength{\rightskip}{0pt plus 5cm}double gauss (
+\begin{DoxyParamCaption}
+\item[{double}]{sigma}
+\end{DoxyParamCaption}
+)}\hypertarget{chain_8c_ae216a94f88cee2af4c2f6c9f66d53005}{}\label{chain_8c_ae216a94f88cee2af4c2f6c9f66d53005}
+
+
+Returns a value drawn from a Gaussian distribution. 
+
+Returns a value drawn from a zero-\/centered Gaussian distribution of a particular standard deviation sigma.
+
+It uses the Box-\/\+Muller algorithm and the Mersenne-\/\+Twister random number generator. It presumes that the random number generator has already been seeded.
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{walkers()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em sigma} & a float with the standard deviation of the Gaussian.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a double with the value drawn from the distribution 
+\end{DoxyReturn}
+
+
+Definition at line 259 of file chain.\+c.
+
+\index{chain.\+c@{chain.\+c}!like@{like}}
+\index{like@{like}!chain.\+c@{chain.\+c}}
+\subsubsection[{\texorpdfstring{like(int Nparam, double Aparam[], int Npts, double u\+Co[], double v\+Co[], double Vis[], double Sigma[])}{like(int Nparam, double Aparam[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])}}]{\setlength{\rightskip}{0pt plus 5cm}double like (
+\begin{DoxyParamCaption}
+\item[{int}]{Nparam, }
+\item[{double}]{Aparam\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{Npts, }
+\item[{double}]{u\+Co\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{v\+Co\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Vis\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Sigma\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{chain_8c_a0f15317bfdd442b54ab5505726f7ada2}{}\label{chain_8c_a0f15317bfdd442b54ab5505726f7ada2}
+
+
+Calculates the likelihood. 
+
+Given a number of parameters Nparam and their values stored in the array Aparam\mbox{[}\mbox{]} as well as a number of data points with coordinates stored in the arrays u\+Co\mbox{[}\mbox{]} and v\+Co\mbox{[}\mbox{]}, visibility amplitudes stored in the array Vis\mbox{[}\mbox{]}, and errors stored in the arrays Sigma\mbox{[}\mbox{]}, it returns the log of the likelihood for the underlying model.
+
+In this example the log likelihood is simply the value of -\/chi2.
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{walkers()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em Nparam} & an int with the number of model parameters\\
+\hline
+{\em Aparam\mbox{[}$\,$\mbox{]}} & an array of doubles with the current values of the model parameters\\
+\hline
+{\em Npts} & an integer with the number of data points\\
+\hline
+{\em u\+Co\mbox{[}$\,$\mbox{]}} & an array of doubles with the u-\/coordinates of the data\\
+\hline
+{\em v\+Co\mbox{[}$\,$\mbox{]}} & an array of doubles with the v-\/coordinates of the data\\
+\hline
+{\em Vis\mbox{[}$\,$\mbox{]}} & an array of doubles with the visibility amplitudes\\
+\hline
+{\em Sigma\mbox{[}$\,$\mbox{]}} & an array of doubles with the errors\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a double with the log likelihood 
+\end{DoxyReturn}
+
+
+Definition at line 157 of file chain.\+c.
+
+\index{chain.\+c@{chain.\+c}!model@{model}}
+\index{model@{model}!chain.\+c@{chain.\+c}}
+\subsubsection[{\texorpdfstring{model(double u\+Co, double v\+Co, int Nparam, double Aparam[])}{model(double uCo, double vCo, int Nparam, double Aparam[])}}]{\setlength{\rightskip}{0pt plus 5cm}double model (
+\begin{DoxyParamCaption}
+\item[{double}]{u\+Co, }
+\item[{double}]{v\+Co, }
+\item[{int}]{Nparam, }
+\item[{double}]{Aparam\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{chain_8c_a65782b161e8945e9eda51d42c2c2e4e1}{}\label{chain_8c_a65782b161e8945e9eda51d42c2c2e4e1}
+
+
+Calculates the model predictions. 
+
+Given a number of parameters Nparam and their values stored in the array Aparam\mbox{[}\mbox{]}, it returns model prediction at the location with coordinates (u\+Co, v\+Co).
+
+The model used here generates the visibility amplitude of a 2-\/\+Gaussian component model
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{walkers()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em u\+Co} & a double with the u-\/coordinate for the evaluation of the model\\
+\hline
+{\em v\+Co} & a double with the v-\/coordinate for the evaluation of the model\\
+\hline
+{\em Nparam} & an int with the number of model parameters\\
+\hline
+{\em Aparam\mbox{[}$\,$\mbox{]}} & an array of doubles with the current values of the model parameters\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a double with the log prior likelihood 
+\end{DoxyReturn}
+
+
+Definition at line 57 of file chain.\+c.
+
+\index{chain.\+c@{chain.\+c}!post@{post}}
+\index{post@{post}!chain.\+c@{chain.\+c}}
+\subsubsection[{\texorpdfstring{post(int Nparam, double Aparam[], int Npts, double u\+Co[], double v\+Co[], double Vis[], double Sigma[])}{post(int Nparam, double Aparam[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])}}]{\setlength{\rightskip}{0pt plus 5cm}double post (
+\begin{DoxyParamCaption}
+\item[{int}]{Nparam, }
+\item[{double}]{Aparam\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{Npts, }
+\item[{double}]{u\+Co\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{v\+Co\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Vis\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Sigma\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{chain_8c_a0de826c8eaed4061c3cae4231a67359d}{}\label{chain_8c_a0de826c8eaed4061c3cae4231a67359d}
+
+
+Calculates the posterior. 
+
+Given a number of parameters Nparam and their values stored in the array Aparam\mbox{[}\mbox{]} as well as a number of data points with coordinates stored in the arrays u\+Co\mbox{[}\mbox{]} and v\+Co\mbox{[}\mbox{]}, visibility amplitudes stored in the array Vis\mbox{[}\mbox{]}, and errors stored in the arrays Sigma\mbox{[}\mbox{]}, it returns the log of the posterior probability for the underlying model.
+
+In this example the log posterior is equal to the sum of the log prior plus the log likelihood
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{walkers()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em Nparam} & an int with the number of model parameters\\
+\hline
+{\em Aparam\mbox{[}$\,$\mbox{]}} & an array of doubles with the current values of the model parameters\\
+\hline
+{\em Npts} & an integer with the number of data points\\
+\hline
+{\em u\+Co\mbox{[}$\,$\mbox{]}} & an array of doubles with the u-\/coordinates of the data\\
+\hline
+{\em v\+Co\mbox{[}$\,$\mbox{]}} & an array of doubles with the v-\/coordinates of the data\\
+\hline
+{\em Vis\mbox{[}$\,$\mbox{]}} & an array of doubles with the visibility amplitudes\\
+\hline
+{\em Sigma\mbox{[}$\,$\mbox{]}} & an array of doubles with the errors\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a double with the log likelihood 
+\end{DoxyReturn}
+
+
+Definition at line 225 of file chain.\+c.
+
+\index{chain.\+c@{chain.\+c}!prior@{prior}}
+\index{prior@{prior}!chain.\+c@{chain.\+c}}
+\subsubsection[{\texorpdfstring{prior(int Nparam, double Aparam[])}{prior(int Nparam, double Aparam[])}}]{\setlength{\rightskip}{0pt plus 5cm}double prior (
+\begin{DoxyParamCaption}
+\item[{int}]{Nparam, }
+\item[{double}]{Aparam\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{chain_8c_a7c34883ff70d6834eae0c1fcf01e5075}{}\label{chain_8c_a7c34883ff70d6834eae0c1fcf01e5075}
+
+
+Calculates the priors. 
+
+Given a number of parameters Nparam and their values stored in the array Aparam\mbox{[}\mbox{]}, it returns the log of the full prior distribution for the underlying model.
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{walkers()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em Nparam} & an int with the number of model parameters\\
+\hline
+{\em Aparam\mbox{[}$\,$\mbox{]}} & an array of doubles with the current values of the model parameters\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a double with the log prior 
+\end{DoxyReturn}
+
+
+Definition at line 106 of file chain.\+c.
+
+\index{chain.\+c@{chain.\+c}!walkers@{walkers}}
+\index{walkers@{walkers}!chain.\+c@{chain.\+c}}
+\subsubsection[{\texorpdfstring{walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev[], int Npts, double u\+Co[], double v\+Co[], double Vis[], double Sigma[])}{walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])}}]{\setlength{\rightskip}{0pt plus 5cm}double walkers (
+\begin{DoxyParamCaption}
+\item[{char}]{fname\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{Nchain, }
+\item[{int}]{Nparam, }
+\item[{double}]{Aparam\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{dev\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{Npts, }
+\item[{double}]{u\+Co\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{v\+Co\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Vis\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Sigma\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}{}\label{chain_8c_a3dd87c67e7f8505b3080845d0d9c8dad}
+
+
+Runs an M\+C\+MC chain. 
+
+Runs an M\+C\+MC chain
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{mcmc_8c_a840291bc02cba5474a4cb46a9b9566fe}{main()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em fname} & a string with the filename where to record the chains\\
+\hline
+{\em Nchains} & an int with the length of the chain to be calculated\\
+\hline
+{\em Nparam} & an int with the number of model parameters\\
+\hline
+{\em Aparam\mbox{[}$\,$\mbox{]}} & an array of doubles with the initial values of the model parameters\\
+\hline
+{\em dev\mbox{[}$\,$\mbox{]}} & an array of doubles with the standard deviations of Gaussian steps for each model parameter\\
+\hline
+{\em Npts} & an integer with the number of data points\\
+\hline
+{\em u\+Co\mbox{[}$\,$\mbox{]}} & an array of doubles with the u-\/coordinates of the data\\
+\hline
+{\em v\+Co\mbox{[}$\,$\mbox{]}} & an array of doubles with the v-\/coordinates of the data\\
+\hline
+{\em Vis\mbox{[}$\,$\mbox{]}} & an array of doubles with the visibility amplitudes\\
+\hline
+{\em Sigma\mbox{[}$\,$\mbox{]}} & an array of doubles with the errors\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a double with the acceptance ratio for this chain; also on return, the array Aparam\mbox{[}\mbox{]} will have the model parameters of the most likely model. 
+\end{DoxyReturn}
+
+
+Definition at line 314 of file chain.\+c.
+

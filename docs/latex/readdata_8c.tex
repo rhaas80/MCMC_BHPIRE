@@ -1,0 +1,95 @@
+\hypertarget{readdata_8c}{}\section{readdata.\+c File Reference}
+\label{readdata_8c}\index{readdata.\+c@{readdata.\+c}}
+
+
+subroutine(s) to read data from files  
+
+
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$math.\+h$>$}\\*
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries E\+R\+R\+O\+R\+\_\+\+F\+I\+LE}~1\hypertarget{readdata_8c_a9fdff3d78b754d4b831816d0560dbb57}{}\label{readdata_8c_a9fdff3d78b754d4b831816d0560dbb57}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{readdata_8c_a183b43b6d3a3c69ecdff8fccc564c832}{read\+Data} (char filename\mbox{[}$\,$\mbox{]}, int $\ast$Npts, double U\mbox{[}$\,$\mbox{]}, double V\mbox{[}$\,$\mbox{]}, double Vis\mbox{[}$\,$\mbox{]}, double Sigma\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Reads data from an ascii file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+subroutine(s) to read data from files 
+
+this file contains a simple subroutine to read the data to be fit from a file.
+
+\begin{DoxyAuthor}{Author}
+D.\+P.
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+November 26, 2018
+\end{DoxyDate}
+No known bugs
+
+\begin{DoxyWarning}{Warning}
+No known warnings 
+\end{DoxyWarning}
+
+
+\subsection{Function Documentation}
+\index{readdata.\+c@{readdata.\+c}!read\+Data@{read\+Data}}
+\index{read\+Data@{read\+Data}!readdata.\+c@{readdata.\+c}}
+\subsubsection[{\texorpdfstring{read\+Data(char filename[], int $\ast$\+Npts, double U[], double V[], double Vis[], double Sigma[])}{readData(char filename[], int *Npts, double U[], double V[], double Vis[], double Sigma[])}}]{\setlength{\rightskip}{0pt plus 5cm}int read\+Data (
+\begin{DoxyParamCaption}
+\item[{char}]{filename\mbox{[}$\,$\mbox{]}, }
+\item[{int $\ast$}]{Npts, }
+\item[{double}]{U\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{V\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Vis\mbox{[}$\,$\mbox{]}, }
+\item[{double}]{Sigma\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{readdata_8c_a183b43b6d3a3c69ecdff8fccc564c832}{}\label{readdata_8c_a183b43b6d3a3c69ecdff8fccc564c832}
+
+
+Reads data from an ascii file. 
+
+Reads data from an ascii file assumed to have only four columns. The first column is the u-\/distance, the second column is the v-\/distance, the third column is the visibility amplitude, and the fourth is the error.
+
+At exit, Npts carries the number of data points that were read, U\mbox{[}\mbox{]}, V\mbox{[}\mbox{]}, Vis\mbox{[}\mbox{]}, and Sigma\mbox{[}\mbox{]} are 1D arrays with the u-\/coordinates, v-\/coordinates, visibility amplitudes, and errors.
+
+\begin{DoxyAuthor}{Author}
+Dimitrios Psaltis
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+Nov 26, 2018
+\end{DoxyDate}
+\begin{DoxyPrecond}{Precondition}
+It is called from \hyperlink{mcmc_8c_a840291bc02cba5474a4cb46a9b9566fe}{main()}
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{Parameters}
+{\em filename\mbox{[}$\,$\mbox{]}} & a string with the filename that contains the data\\
+\hline
+{\em $\ast$\+Npts} & an int with the number of data points read\\
+\hline
+{\em U\mbox{[}$\,$\mbox{]}} & an array of doubles with the u-\/coordinates of the data\\
+\hline
+{\em V\mbox{[}$\,$\mbox{]}} & an array of doubles with the v-\/coordinates of the data\\
+\hline
+{\em Vis\mbox{[}$\,$\mbox{]}} & an array of the visibility amplitudes\\
+\hline
+{\em Sigma\mbox{[}$\,$\mbox{]}} & an array of the errors\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+zero if all was OK, one if there as a problem 
+\end{DoxyReturn}
+
+
+Definition at line 60 of file readdata.\+c.
+
