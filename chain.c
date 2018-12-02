@@ -14,7 +14,10 @@
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>
-
+#include<omp.h>
+#ifndef _OPENMP
+int omp_get_thread_num(void) { return 0; }
+#endif
 
 
 typedef unsigned int uint32;
@@ -322,19 +325,13 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
 {
   FILE *chainfile;                     // file to record MCMC chains
   
-  int ichain;                          // index counting chain links
-  int iparam;                          // index counting parameters
-  int index;                           // generic index
-  
-  double AparamPlusOne[Nparam];        // temporary storage of new model parameters
-
   double AparamMax[Nparam];            // parameters of most likely model
   double postMax=-1.e34;               // maximum posterior
   
   int accept=0;                        // initialize number of accepted MCMC points
 
   // calculate the posterior for the initial parameters
-  double probpre=post(Nparam,Aparam,Npts,uCo,vCo,Vis,Sigma);
+  const double probpre=post(Nparam,Aparam,Npts,uCo,vCo,Vis,Sigma);
 
   // open file to output MCMC chain
   if ((chainfile=fopen(fname,"w"))==NULL)
@@ -344,15 +341,23 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
     }
   
   
-  seedMT(SEEDNO);                      // start the random number generator
+#pragma omp parallel
+  seedMT(SEEDNO + omp_get_thread_num()); // start the random number generator
   //  srand(100);
 
-  for (ichain=1;ichain<=Nchain;ichain++)
+#pragma omp parallel reduction(+: accept)
+  {
+  double locAparam[Nparam];
+  for (int iparam=1;iparam<=Nparam;iparam++)
+      locAparam[iparam-1]=Aparam[iparam-1];
+#pragma omp for
+  for (int ichain=1;ichain<=Nchain;ichain++)
     {
+      double AparamPlusOne[Nparam];        // temporary storage of new model parameters
       // take a Gaussian step in each parameter
-      for (iparam=1;iparam<=Nparam;iparam++)
+      for (int iparam=1;iparam<=Nparam;iparam++)
 	{
-	  AparamPlusOne[iparam-1]=Aparam[iparam-1]+gauss(dev[iparam-1]);
+	  AparamPlusOne[iparam-1]=locAparam[iparam-1]+gauss(dev[iparam-1]);
 	}
 
       // calculate the posterior for the new set of model parameters
@@ -360,6 +365,7 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
       
       // draw a random number of 0 to 1
             double probRandom=randomMT()/(MTMAX*1.0)+0.5;      // hack for unsigned ints
+#pragma omp critical
 	    printf("%e\n",probRandom);
       //      double probRandom=rand()/(RAND_MAX+1.0);
 
@@ -367,18 +373,19 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
       if (probpost>=probpre+log(probRandom))
 	{
 	  // update the model parameters
-	  for (iparam=1;iparam<=Nparam;iparam++)
+	  for (int iparam=1;iparam<=Nparam;iparam++)
 	    {
-	      Aparam[iparam-1]=AparamPlusOne[iparam-1];
+	      locAparam[iparam-1]=AparamPlusOne[iparam-1];
 	    }
 	  // and add one to the acceptance counter
 	  accept+=1;
 	  // check if this is the most likely value
+#pragma omp critical
 	  if (probpost>postMax)
 	    {
-	      for (iparam=1;iparam<=Nparam;iparam++)
+	      for (int iparam=1;iparam<=Nparam;iparam++)
 		{
-		  AparamMax[iparam-1]=Aparam[iparam-1];
+		  AparamMax[iparam-1]=locAparam[iparam-1];
 		}
 	      postMax=probpost;
 	    }
@@ -389,17 +396,18 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
 	}
 
       // record the chain
-      for(index=1;index<=Nparam;index++)
-	fprintf(chainfile,"%e\t%s",Aparam[index-1],(index==Nparam) ? "\n" : "");
-
+#pragma omp critical(chainwrite)
+      for(int index=1;index<=Nparam;index++)
+	fprintf(chainfile,"%e\t%s",locAparam[index-1],(index==Nparam) ? "\n" : "");
       
     }
+  }
 
   // close file with chains
   fclose(chainfile);
   
   // return the most likely model values
-  for (iparam=1;iparam<=Nparam;iparam++)
+  for (int iparam=1;iparam<=Nparam;iparam++)
     {
       Aparam[iparam-1]=AparamMax[iparam-1];
     }

@@ -3,7 +3,7 @@
 
 #For the GNU C compiler
 CC=gcc 
-CFLAGS=-w
+CFLAGS=-w -fopenmp
 
 #Libraries
 LIBSGEN=-lm

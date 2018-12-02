@@ -82,6 +82,7 @@ typedef unsigned int uint32;
 static uint32   state[N+1];     // state vector + 1 extra to not violate ANSI C
 static uint32   *next;          // next random value is computed from here
 static int      left = -1;      // can *next++ this many times before reloading
+#pragma omp threadprivate(state, next, left)
 
 /*!
   \brief
