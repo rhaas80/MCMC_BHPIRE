@@ -35,7 +35,7 @@
 #define ERROR_FILE 1             //!< error code for file i/o errors
 
 extern double model(double uCo, double vCo, int Nparam, double Aparam[]);
-extern double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[]);
+extern double walkers(const char fname[], const int Nchain, int Nparam, double Aparam[], const double dev[], const int Npts, const double uCo[], const double vCo[], const double Vis[], const double Sigma[]);
 
 /*!
 \brief 

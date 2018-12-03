@@ -113,7 +113,7 @@ the underlying model.
 \return a double with the log prior 
 
 */
-double prior(int Nparam, double Aparam[])
+double prior(const int Nparam, const double Aparam[])
 {
   double result=1.;
 
@@ -164,7 +164,7 @@ In this example the log likelihood is simply the value of -chi2.
 \return a double with the log likelihood
 
 */
-double like(int Nparam, double Aparam[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])
+double like(const int Nparam, const double Aparam[], const int Npts, const double uCo[], const double vCo[], const double Vis[], const double Sigma[])
 {
   double result, chi2=0.0;
   int index;
@@ -232,7 +232,7 @@ the log likelihood
 \return a double with the log likelihood
 
 */
-double post(int Nparam, double Aparam[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])
+double post(const int Nparam, const double Aparam[], const int Npts, const double uCo[], const double vCo[], const double Vis[], const double Sigma[])
 {
   double result;
 
@@ -321,7 +321,7 @@ return, the array Aparam[] will have the model parameters of the most
 likely model.
 
 */
-double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])
+double walkers(const char fname[], const int Nchain, const int Nparam, double Aparam[], const double dev[], const int Npts, const double uCo[], const double vCo[], const double Vis[], const double Sigma[])
 {
   FILE *chainfile;                     // file to record MCMC chains
   
