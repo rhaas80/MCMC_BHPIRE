@@ -342,11 +342,10 @@ double walkers(const char fname[], const int Nchain, const int Nparam, double Ap
   
   
 #pragma omp parallel
+  {
   seedMT(SEEDNO + omp_get_thread_num()); // start the random number generator
   //  srand(100);
 
-#pragma omp parallel reduction(+: accept)
-  {
   double locAparam[Nparam];
   for (int iparam=1;iparam<=Nparam;iparam++)
       locAparam[iparam-1]=Aparam[iparam-1];
