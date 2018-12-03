@@ -380,7 +380,7 @@ double walkers(const char fname[], const int Nchain, const int Nparam, double Ap
 	  // and add one to the acceptance counter
 	  accept+=1;
 	  // check if this is the most likely value
-#pragma omp critical
+#pragma omp critical(postMax)
 	  if (probpost>postMax)
 	    {
 	      for (int iparam=1;iparam<=Nparam;iparam++)
