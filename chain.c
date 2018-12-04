@@ -14,6 +14,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>
+#include<mpi.h>
 
 
 
@@ -301,6 +302,8 @@ Runs an MCMC chain
 
 @param Aparam[] an array of doubles with the initial values of the model parameters
 
+@param *postMax maximum posterior
+
 @param dev[] an array of doubles with the standard deviations of Gaussian steps for each model parameter
 
 @param Npts an integer with the number of data points
@@ -318,7 +321,7 @@ return, the array Aparam[] will have the model parameters of the most
 likely model.
 
 */
-double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])
+double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double *postMax, double dev[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[])
 {
   FILE *chainfile;                     // file to record MCMC chains
   
@@ -329,24 +332,32 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
   double AparamPlusOne[Nparam];        // temporary storage of new model parameters
 
   double AparamMax[Nparam];            // parameters of most likely model
-  double postMax=-1.e34;               // maximum posterior
   
   int accept=0;                        // initialize number of accepted MCMC points
+  int rank, sz;                        // my own MPI rank, total no. of ranks
+  // the next one makes chains a "pointer to an array of Nparam doubles"
+  double (*chains)[Nparam];            // chains to write to file
+
+  // there are too many chains to store this all on the stack, so get some
+  // data on the heap.
+  chains = malloc(sizeof(double)*Nparam*Nchain);
+  if(chains == NULL)
+  {
+    printf("Could not allocate memory\n");
+    MPI_Abort(MPI_COMM_WORLD, 1);
+  }
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &sz);
 
   // calculate the posterior for the initial parameters
   double probpre=post(Nparam,Aparam,Npts,uCo,vCo,Vis,Sigma);
 
-  // open file to output MCMC chain
-  if ((chainfile=fopen(fname,"w"))==NULL)
-    {
-      printf("Error opening file %s for writing\n",fname);
-      return ERROR_FILE;
-    }
   
-  
-  seedMT(SEEDNO);                      // start the random number generator
+  seedMT(SEEDNO + rank);               // start the random number generator
   //  srand(100);
 
+  *postMax=-1.e34;
   for (ichain=1;ichain<=Nchain;ichain++)
     {
       // take a Gaussian step in each parameter
@@ -374,13 +385,13 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
 	  // and add one to the acceptance counter
 	  accept+=1;
 	  // check if this is the most likely value
-	  if (probpost>postMax)
+	  if (probpost>*postMax)
 	    {
 	      for (iparam=1;iparam<=Nparam;iparam++)
 		{
 		  AparamMax[iparam-1]=Aparam[iparam-1];
 		}
-	      postMax=probpost;
+	      *postMax=probpost;
 	    }
 	}
       else // otherwise
@@ -390,13 +401,29 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
 
       // record the chain
       for(index=1;index<=Nparam;index++)
-	fprintf(chainfile,"%e\t%s",Aparam[index-1],(index==Nparam) ? "\n" : "");
-
-      
+        chains[ichain-1][index-1] = Aparam[index-1];
     }
 
-  // close file with chains
-  fclose(chainfile);
+  for(int r = 0 ; r < sz ; r++) {
+    if(r == rank) {
+      // open file to output MCMC chain
+      if ((chainfile=fopen(fname,rank == 0 ? "w" : "a"))==NULL)
+        {
+          printf("Error opening file %s for writing\n",fname);
+          MPI_Abort(MPI_COMM_WORLD, 1);
+        }
+
+      // output chain data
+      for (ichain=1;ichain<=Nchain;ichain++)
+        for(index=1;index<=Nparam;index++)
+          fprintf(chainfile,"%e\t%s",chains[ichain-1][index-1],(index==Nparam) ? "\n" : "");
+
+      
+      // close file with chains
+      fclose(chainfile);
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
+  }
   
   // return the most likely model values
   for (iparam=1;iparam<=Nparam;iparam++)

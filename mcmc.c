@@ -24,6 +24,7 @@
 */
 #include <stdio.h>
 #include <math.h>
+#include<mpi.h>
 
 
 #define NPTSMAX 1024             //!< max number of data points
@@ -35,7 +36,7 @@
 #define ERROR_FILE 1             //!< error code for file i/o errors
 
 extern double model(double uCo, double vCo, int Nparam, double Aparam[]);
-extern double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[]);
+extern double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double *postMax, double dev[], int Npts, double uCo[], double vCo[], double Vis[], double Sigma[]);
 
 /*!
 \brief 
@@ -51,7 +52,7 @@ Main function
 \date Nov 26, 2018
 
 */
-int main(void)
+int main(int argc, char **argv)
 {
   double uCo[NPTSMAX];            // array with u-coordinates of data points
   double vCo[NPTSMAX];            // array with v-coordinates of data points
@@ -59,6 +60,7 @@ int main(void)
   double Sigma[NPTSMAX];          // array with uncertainties
   double Aparam[NPARAMMAX];       // array with model parameters
   double dev[NPARAMMAX];          // array with dispersion of Gaussian steps
+  double postMax;                 // maximum of posterior probability
 
   int Npts;                      // number of data points
 
@@ -72,7 +74,13 @@ int main(void)
 
   FILE *logfile;                 // file to store a log
   FILE *modelfile;               // file to store the best-fit model
+  int rank, sz;                  // my own MPI rank, total no. of ranks
+
+  MPI_Init(&argc, &argv);
   
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Comm_size(MPI_COMM_WORLD, &sz);
+
   result=readData(filename,&Npts,uCo,vCo,Vis,Sigma);
 
   if (result!=0)
@@ -119,33 +127,64 @@ int main(void)
       dev[index-1]=frac*Aparam[index-1];
     }
   
-  double acc=walkers(chainfname,Nchain,Nparam,Aparam,dev,Npts,uCo,vCo,Vis,Sigma);
+  double acc=walkers(chainfname,Nchain/sz,Nparam,Aparam,&postMax,dev,Npts,uCo,vCo,Vis,Sigma);
 
-  // if we want a verbose output of the results
-  if (VERBOSE==1)
+  // gather results from all ranks and combine results
+  double accAll[sz], AparamAll[sz][Nparam], postMaxAll[Nparam];
+  MPI_Gather(&acc, 1, MPI_DOUBLE, accAll, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  MPI_Gather(Aparam, Nparam, MPI_DOUBLE, AparamAll, Nparam, MPI_DOUBLE, 0,
+             MPI_COMM_WORLD);
+  MPI_Gather(&postMax, 1, MPI_DOUBLE, postMaxAll, 1, MPI_DOUBLE, 0,
+             MPI_COMM_WORLD);
+  // each rank has the same number of links so the global acceptance rate is
+  // just the average
+  acc = 0.;
+  for(int r = 0 ; r < sz ; r++)
+    acc += accAll[r];
+  acc /= sz;
+  // find global set of params with largest posterior probability
+  postMax = -1e34;
+  for(int r = 0 ; r < sz ; r++)
+  {
+    if(postMaxAll[r] > postMax)
     {
-      fprintf(logfile,"%d chains completed with an acceptance ratio of %e\n",Nchain,acc);
-
-      fprintf(logfile,"Most likely values of the parameters:\n");
-       
-      for(index=1;index<=Nparam;index++)
-	fprintf(logfile,"%e\t%s",Aparam[index-1],(index==Nparam) ? "\n" : "");
+      for(int index = 1 ; index <= Nparam ; index++)
+        Aparam[index-1] = AparamAll[r][index-1];
+      postMax = postMaxAll[r];
     }
+  }
 
-  // To record the best fit model together with the data
-  if ((modelfile=fopen(modelfname,"w"))==NULL)
-    {
-      printf("Error opening file %s for writing\n",modelfname);
-      return ERROR_FILE;
-    }
-  fprintf(modelfile,"uCo,vCo,VisAmp,Sigma,Model\n");
-  for (index=1;index<=Npts;index++)
-    {
-      fprintf(modelfile, "%e, %e, %e, %e, %e\n",uCo[index-1],vCo[index-1],Vis[index-1],Sigma[index-1],model(uCo[index-1],vCo[index-1],Nparam,Aparam));
-    }
-  fclose(modelfile);
+  if(rank == 0)
+  {
+    // if we want a verbose output of the results
+    if (VERBOSE==1)
+      {
+        fprintf(logfile,"%d chains completed with an acceptance ratio of %e\n",Nchain,acc);
 
-  if (VERBOSE==1)
-    fclose(logfile);
+        fprintf(logfile,"Most likely values of the parameters:\n");
+
+        for(index=1;index<=Nparam;index++)
+          fprintf(logfile,"%e\t%s",Aparam[index-1],(index==Nparam) ? "\n" : "");
+      }
+
+    // To record the best fit model together with the data
+    if ((modelfile=fopen(modelfname,"w"))==NULL)
+      {
+        printf("Error opening file %s for writing\n",modelfname);
+        return ERROR_FILE;
+      }
+    fprintf(modelfile,"uCo,vCo,VisAmp,Sigma,Model\n");
+    for (index=1;index<=Npts;index++)
+      {
+        fprintf(modelfile, "%e, %e, %e, %e, %e\n",uCo[index-1],vCo[index-1],Vis[index-1],Sigma[index-1],model(uCo[index-1],vCo[index-1],Nparam,Aparam));
+      }
+    fclose(modelfile);
+
+    if (VERBOSE==1)
+      fclose(logfile);
+  }
+
+  MPI_Finalize();
+
   return 0;           // all is well
 }

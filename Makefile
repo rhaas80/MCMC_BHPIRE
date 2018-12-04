@@ -2,7 +2,7 @@
 # v1 DP 30 Nov 2018
 
 #For the GNU C compiler
-CC=gcc 
+CC=mpicc
 CFLAGS=-w
 
 #Libraries
