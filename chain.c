@@ -27,8 +27,8 @@ uint32 MTMAX=0xFFFFFFFFU;           // max number in the MT random series
 #define ERROR_FILE 9999            // error code for file i/o errors
 
 
-extern void seedMT(uint32 seed);
-extern uint32 reloadMT(void);
+void seedMT(uint32 seed);
+uint32 reloadMT(void);
 
 /*!
 \brief 
@@ -117,7 +117,7 @@ double prior(int Nparam, double Aparam[])
   // for each gaussian components, the prior is inversely proportional to the
   // two scale parameters, normalization and width
   // NB: no check for zeros, to increase efficiency
-  result=1./(Aparam[0]*Aparam[1]*Aparam[4]*Aparam[5]);
+  result=-log(Aparam[0]*Aparam[1]*Aparam[4]*Aparam[5]);
 
   return result;
   
@@ -359,8 +359,7 @@ double walkers(char fname[], int Nchain, int Nparam, double Aparam[], double dev
       double probpost=post(Nparam,AparamPlusOne,Npts,uCo,vCo,Vis,Sigma);
       
       // draw a random number of 0 to 1
-            double probRandom=randomMT()/(MTMAX*1.0)+0.5;      // hack for unsigned ints
-	    printf("%e\n",probRandom);
+      double probRandom=randomMT()/(MTMAX*1.0)+0.5;      // hack for unsigned ints
       //      double probRandom=rand()/(RAND_MAX+1.0);
 
       // if the MCMC condition is satisfied
